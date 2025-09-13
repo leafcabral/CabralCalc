@@ -1,8 +1,6 @@
 #ifndef CABRAL_PARSER_H
 #define CABRAL_PARSER_H
 
-// Implementation
-
 typedef float instrValue;
 typedef enum {
 	OPCODE_NONE = 0,
@@ -14,8 +12,8 @@ typedef enum {
 	OPCODE_EXP
 } instrOpcode;
 typedef enum {
-	TYPE_NODE = 0
-	TYPE_VALUE,
+	TYPE_OPERATION = 0
+	TYPE_NUMBER,
 } instrNodeType;
 
 typedef struct instrNode {
@@ -32,16 +30,16 @@ typedef struct instrNode {
 	} data;
 } instrNode;
 
-int instrFromStr(Instruction *root, const char *str);
+instrNode newNumberNode(instrValue number);
+instrNode newOperationNode(instrOpcode code);
 
-// Abstraction
+instrNode *treeFromStr(const char *str);
+void deleteTree(instrNode *root);
+typedef instrNode *MathExpression;
 
-typedef struct MathExpression {
-	
-} MathExpression;
-
-int MathExpressionInit(MathExpression *exp);
-int MathExpressionFree(MathExpression *exp);
-
+MathExpression MathExprNew();
+void MathExprClear(MathExpression mathExpr);
+MathExpression MathExprParse(const char *exp);
+float MathExprResult(MathExpression mathExpr);
 
 #endif
