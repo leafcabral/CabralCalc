@@ -3,17 +3,13 @@
 
 typedef float instrValue;
 typedef enum {
-	OPCODE_NONE = 0,
-	OPCODE_ADD,
-	OPCODE_SUB,
-	OPCODE_MUL,
-	OPCODE_DIV,
-	OPCODE_MOD,
-	OPCODE_EXP
-} instrOpcode;
-typedef enum {
-	TYPE_OPERATION = 0
-	TYPE_NUMBER,
+	NODE_NUMBER,
+	NODE_ADD,
+	NODE_SUB,
+	NODE_MUL,
+	NODE_DIV,
+	NODE_MOD,
+	NODE_EXP
 } instrNodeType;
 
 typedef struct instrNode {
@@ -21,17 +17,18 @@ typedef struct instrNode {
 
 	union {
 		instrValue number;
-		
 		struct {
-			instrOpcode code;
 			struct instrNode *left;
 			struct instrNode *right;
-		} operation;
+		} next;
 	} data;
 } instrNode;
 
 instrNode newNumberNode(instrValue number);
 instrNode newOperationNode(instrOpcode code);
+
+int insertNodeLeft(instrNode *node, instrNode left);
+int insertNodeRight(instrNode *node, instrNode right);
 
 instrNode *treeFromStr(const char *str);
 void deleteTree(instrNode *root);

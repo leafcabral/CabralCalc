@@ -18,6 +18,21 @@ instrNode newOperationNode(instrOpcode code) {
         };
 }
 
+int insertNodeLeft(instrNode *node, instrNode left) {
+        // TODO
+}
+
+int insertNodeRight(instrNode *node, instrNode right) {
+        // TODO
+}
+
+/* 4 + 2 * 10 + 3 * (5 + 1)
++ 4
+  + 
+    * 2 10
+    * 3
+      + 5 1
+*/
 instrNode *treeFromStr(const char *str) {
         // TODO
 }
