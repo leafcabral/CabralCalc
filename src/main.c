@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 #include "calculator.h"
 
@@ -6,7 +7,7 @@ int main(void) {
 	Calculator calc;
 	calcInit(&calc);
 
-	puts("Type \'$\' to close program.");
+	puts("Type \'quit\' to close program.");
 	do {
 		printf(">> ");
 		calcReadLine(&calc);
@@ -15,8 +16,9 @@ int main(void) {
 		float result = calcLineResult(&calc);
 
 		printf("%f\n", result);
-	} while (calcCurrentLine(&calc)[0] != '$');
+	} while (strcmp(calcCurrentLine(&calc), 'quit'));
 
 	calcClose(&calc);
 	return 0;
-};
+}
+

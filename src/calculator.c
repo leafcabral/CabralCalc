@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 int calcInit(Calculator *calc) {
 	calc->mem = (typeof(calc->mem)) {0};
 

@@ -1,19 +1,12 @@
 #ifndef CABRAL_CALCULATOR_H
 #define CABRAL_CALCULATOR_H
 
-#define NUM_VARIABLES 9
-#define NUM_HISTORY 16
-
-#include "parser.h"
+#define CALC_NUM_HISTORY 32
 
 typedef struct {
-	union {
-		struct { float A, B, C, D, E, F, M, X, Y; };
-		float var[NUM_VARIABLES];
-	} mem;
-	
 	char *buffers[NUM_HISTORY];
-	MathExpression *currentExpression;
+
+	MathExpression currentExpression;
 } Calculator;
 
 
