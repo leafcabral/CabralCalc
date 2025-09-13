@@ -35,11 +35,5 @@ instrNode newOperationNode(instrOpcode code);
 
 instrNode *treeFromStr(const char *str);
 void deleteTree(instrNode *root);
-typedef instrNode *MathExpression;
-
-MathExpression MathExprNew();
-void MathExprClear(MathExpression mathExpr);
-MathExpression MathExprParse(const char *exp);
-float MathExprResult(MathExpression mathExpr);
 
 #endif
