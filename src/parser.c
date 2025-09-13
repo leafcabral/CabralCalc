@@ -1,29 +1,37 @@
 #include "parser.h"
+#include "utils.h"
+#include <string.h>
 
 instrNode newNumberNode(instrValue number) {
-        return (instrNode) {
-                .type = TYPE_NUMBER,
-                .data = { .number = 0.0f }
-        };
+	return (instrNode) {
+		.type = NODE_NUMBER,
+		.data = { .number = number }
+	};
 }
 
-instrNode newOperationNode(instrOpcode code) {
-        return (instrNode) {
-                .type = TYPE_OPERATION,
-                .data = { .operation = {
-                        .code = OPCODE_NONE,
-                        .left = NULL,
-                        .right = NULL
-                }}
-        };
+instrNode newOperationNode(instrNodeType code) {
+	return (instrNode) {
+		.type = code,
+		.data = { .operation = {
+			.left = NULL,
+			.right = NULL
+		}}
+	};
 }
 
-int insertNodeLeft(instrNode *node, instrNode left) {
-        // TODO
+instrNode *allocNode(instrNode node) {
+	instrNode *temp = salloc(sizeof(instrNode*));
+	memcpy(temp, &node, sizeof(instrNode));
+	
+	return temp;
 }
 
-int insertNodeRight(instrNode *node, instrNode right) {
-        // TODO
+void insertNodeLeft(instrNode *node, instrNode left) {
+	node->data.next.left = allocNode(left);
+}
+
+void insertNodeRight(instrNode *node, instrNode right) {
+	node->data.next.right = allocNode(right);
 }
 
 /* 4 + 2 * 10 + 3 * (5 + 1)
@@ -34,9 +42,9 @@ int insertNodeRight(instrNode *node, instrNode right) {
       + 5 1
 */
 instrNode *treeFromStr(const char *str) {
-        // TODO
+	// TODO
 }
 void deleteTree(instrNode *root) {
-        // TODO
+	// TODO
 }
 

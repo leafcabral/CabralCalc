@@ -25,10 +25,12 @@ typedef struct instrNode {
 } instrNode;
 
 instrNode newNumberNode(instrValue number);
-instrNode newOperationNode(instrOpcode code);
+instrNode newOperationNode(instrNodeType code);
 
-int insertNodeLeft(instrNode *node, instrNode left);
-int insertNodeRight(instrNode *node, instrNode right);
+instrNode *allocNode(instrNode node);
+
+void insertNodeLeft(instrNode *node, instrNode left);
+void insertNodeRight(instrNode *node, instrNode right);
 
 instrNode *treeFromStr(const char *str);
 void deleteTree(instrNode *root);
