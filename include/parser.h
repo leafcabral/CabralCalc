@@ -1,6 +1,10 @@
 #ifndef CABRAL_PARSER_H
 #define CABRAL_PARSER_H
 
+typedef MathExpression;
+int MathExpressionInit(MathExpression *exp);
+int MathExpressionFree(MathExpression *exp);
+
 typedef float instrValue;
 
 typedef enum {
@@ -27,12 +31,7 @@ typedef struct Instruction {
 	instrNode left;
 	instrNode right;
 } Instruction;
- 
-enum {
-	PARSE_SUCCES,
-	PARSE_FAIL
-} parseResult;
 
-enum parseResult instrFromStr(Instruction *root, const char *str);
+int instrFromStr(Instruction *root, const char *str);
 
 #endif

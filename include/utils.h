@@ -8,10 +8,6 @@
 	exit(1); \
 }
 
-enum {
-	IDK	
-} fuctionResult;
-
 void *salloc(size_t size);
 
 #endif

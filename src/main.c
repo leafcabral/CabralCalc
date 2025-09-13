@@ -1,20 +1,21 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
-#include "../include/utils.h"
-#include "../include/calculator.h"
-
+#include "calculator.h"
 
 int main(void) {
 	Calculator calc;
 	calcInit(&calc);
 
+	puts("Type \'$\' to close program.");
 	do {
 		printf(">> ");
 		calcReadLine(&calc);
-		puts(calc.buffers[0]);
-	} while (calc.buffers[0][0] != '$');
+		
+		calcParseLine(&calc)
+		float result = calcLineResult(&calc);
+
+		printf("%f\n", result);
+	} while (calcCurrentLine(&calc)[0] != '$');
 
 	calcClose(&calc);
 	return 0;

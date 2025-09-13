@@ -1,6 +1,6 @@
-#include "../include/calculator.h"
+#include "calculator.h"
 
-#include "../include/utils.h"
+#include "utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,6 +12,22 @@ int calcInit(Calculator *calc) {
 	for (int i = 0; i < NUM_HISTORY; i++) {
 		calc->buffers[i] = NULL;
 	}
+
+	MathExpressionInit(calc->currentExpression);
+	
+	return 0;
+}
+
+int calcClose(Calculator *calc) {
+	calc->mem = (typeof(calc->mem)) {0};
+
+	for (int i = 0; i < NUM_HISTORY; i++) {
+		free(calc->buffers[i]);
+		calc->buffers[i] = NULL;
+	}
+
+	mathExpressionFree(calc->currentExpression);
+	calc->currentExpression = NULL;
 	
 	return 0;
 }
@@ -35,4 +51,15 @@ int calcReadLine(Calculator *calc) {
 	return 0;
 }
 
-// TODO int calcClose(Calculator *calc) {}
+int calcParseLine(Calculator *calc) {
+	return 1;
+}
+
+float calcLineResult(Calculator *calc) {
+	return 1;
+}
+
+char *calcCurrentLine(Calculator *calc) {
+	return calc->buffers[0];
+}
+
