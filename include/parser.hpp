@@ -7,11 +7,13 @@
 #include <vector>
 #include <regex>
 #include <unordered_set>
+#include <utility> // std::pair
 
 enum class TokenType {
 	UNKNOWN = 0,
 	NUMBER,
 	OPERATOR,
+	IDENTIFIER, // variables and initial func and const
 	FUNCTION,
 	CONSTANT,
 	L_PAREN,
@@ -29,18 +31,33 @@ struct Token {
 
 	std::string toString();
 	friend std::ostream& operator<<(std::ostream& os, const Token& token);
-	
-	static std::regex validTokens();
 
 };
 
-namespace TokenIdentifiers {
+namespace ValidTokens {
+	const std::regex regexIntDivision(R"(//)|");
+	const std::regex regexNumber(R"(([0-9]*\.?[0-9]+(?:[eE][-+]?[0-9]+)?)|");
+	const std::regex regexIdentifier(R"([a-zA-Z][a-zA-Z0-9]*)|");
+	const std::regex regexOperator(R"([+\\-*/^])|");
+	const std::regex regexLParen(R"([(])|");
+	const std::regex regexRParen(R"([)])|");
+	const std::regex regexComma(R"(,))");
+
+	const std::pair<const std::regex*, TokenType> patterns[] = {
+		{&regexIntDivision, TokenType::OPERATOR},
+		{&regexNumber, TokenType::NUMBER},
+		{&regexIdentifier, TokenType::IDENTIFIER},
+		{&regexOperator, TokenType::OPERATOR},
+		{&regexLParen, TokenType::L_PAREN},
+		{&regexRParen, TokenType::R_PAREN},
+		{&regexComma, TokenType::COMMA},
+	}
+	
 	const std::unordered_set<std::string> functions = {
 		"sin", "cos", "tan", "sqrt", "log",
 		"ln", "exp", "abs", "root", "max",
 		"min"
 	};
-	
 	const std::unordered_set<std::string> constants = {
 		"pi", "euler", "goldenratio"
 	};

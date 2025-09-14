@@ -9,10 +9,12 @@ Token::Token(TokenType type, std::string_view value, size_t originalPosition) {
 }
 
 Token::Token(std::string value, size_t originalPosition) {
-	/* std::regex validTokens = Token::validTokens();
+	std::regex validTokens = Token::validTokens();
+
+	
+	
 	this.value = value;
 	this.originalPosition = originalPosition;
-	*/
 }
 
 std::string Token::toString() {
@@ -22,18 +24,6 @@ std::string Token::toString() {
 std::ostream& operator<<(std::ostream& os, const Token& token) {
 	os << token.toString();
 	return os;
-}
-
-static std::regex Token::validTokens() {
-	std::regex valid(
-		R"(([0-9]*\.?[0-9]+(?:[eE][-+]?[0-9]+)?)|" + // numbers
-		R"([a-zA-Z][a-zA-Z0-9]*)|" + // identifier
-		R"([+\\-*/^()])|" + // operator and parentheses
-		R"(//)|" + // integer division (two operators together)
-		R"(,))", // comma
-		std::regex::optimize // slow compilation, fast runtime
-	);
-	return 
 }
 	
 MathExpression Parser::tokenize(std::string str) {

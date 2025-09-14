@@ -8,6 +8,7 @@ CabralCalc is a CLI calculator app that's intended to have support for basic and
 - [ ] _Advanced_ arithmetic ```^ sqrt(a) root(a,b) log(a)```
 - [ ] Trigonometric functions ```sin(a) cos(a) tan(a)```
 - [ ] Constants ```pi() euler() goldenratio()```
+- [ ] Variables ```x abc variable1```
 - [ ] Other operations: 
 	- [ ] Integer division ```//```
 	- [ ] Modulo ```mod(a,b)```
