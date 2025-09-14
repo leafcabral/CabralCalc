@@ -1,10 +1,7 @@
-// g++ src/parser.cc tests/parser-test.cc -o build/parser-test -std=c++23 -Iinclude -Wall -Wextra -Werror -Wconversion -Wformat -Wunreachable-code -Wfloat-equal -Wshadow -Wpointer-arith -Winit-self -g -fsanitize=address,undefined
-
 #include "parser.hpp"
 
 #include <string>
 #include <iostream>
-#include <vector>
 #include <cassert>
 
 /*
@@ -46,8 +43,15 @@ int main(void) {
 	do {
 		std::cout << ">> ";
 		std::getline(std::cin, input);
+		if (input == "quit") { break; }
 		
-		Parser::MathExpression exp = Parser::tokenize(input);
+		Parser::MathExpression exp;
+		try {
+			exp = Parser::tokenize(input);
+		} catch (size_t errPosition) {
+			std::cerr << "Malformed expression at position " << errPosition << std::endl;
+			continue;
+		}
 		std::cout << Parser::toString(exp) << std::endl;
 	} while (input != "quit");
 	

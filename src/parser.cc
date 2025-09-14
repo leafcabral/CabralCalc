@@ -1,9 +1,48 @@
 #include "parser.hpp"
 
-#include <iterator> // std::distance
-#include <cctype>
-#include <stdexcept>
-#include <format>
+#include <regex>
+#include <iostream>
+#include <unordered_set>
+#include <array>
+
+namespace ValidTokens {
+	const std::regex regexIntDivision("(//)");
+	const std::regex regexNumber("([0-9]*\\.?[0-9]+(?:[eE][-+]?[0-9]+)?)");
+	const std::regex regexIdentifier("([a-zA-Z][a-zA-Z0-9]*)");
+	const std::regex regexOperator("([-+*/^])");
+	const std::regex regexLParen("([(])");
+	const std::regex regexRParen("([)])");
+	const std::regex regexComma("(,)");
+	const std::regex regexALL(
+		"(//)|"
+		"([0-9]*\\.?[0-9]+(?:[eE][-+]?[0-9]+)?)|"
+		"([a-zA-Z][a-zA-Z0-9]*)|"
+		"([-+*/^])|"
+		"([(])|"
+		"([)])|"
+		"(,)"
+	);
+
+	// Double brackest to avoid "too many initializers" error
+	const std::array<std::pair<const std::regex, TokenType>, 7> patterns = {{
+		{regexIntDivision, TokenType::OPERATOR},
+		{regexNumber, TokenType::NUMBER},
+		{regexIdentifier, TokenType::IDENTIFIER},
+		{regexOperator, TokenType::OPERATOR},
+		{regexLParen, TokenType::L_PAREN},
+		{regexRParen, TokenType::R_PAREN},
+		{regexComma, TokenType::COMMA}
+	}};
+	
+	const std::unordered_set<std::string> functions = {
+		"sin", "cos", "tan", "sqrt", "log",
+		"ln", "exp", "abs", "root", "max",
+		"min"
+	};
+	const std::unordered_set<std::string> constants = {
+		"pi", "euler", "goldenratio"
+	};
+}
 
 Token::Token(TokenType tt, std::string str, size_t pos) {
 	this->type = tt;
@@ -16,6 +55,7 @@ Token::Token(std::string str, size_t pos) {
 	for (const auto& pattern : ValidTokens::patterns) {
 		if (std::regex_match(value, pattern.first)) {
 			this->type = pattern.second;
+			break;
 		}
 	}
 	if (this->type == TokenType::IDENTIFIER) {
@@ -65,7 +105,7 @@ std::string Token::toString() const {
 		default: break;
 	}
 	
-	return std::format("{}:{}", strType, this->value);
+	return strType + ':' + this->value;
 }
 
 std::ostream& operator<<(std::ostream& os, const Token& token) {
@@ -83,6 +123,8 @@ Parser::MathExpression Parser::tokenize(std::string str) {
 		auto match = *i;
 		Token current(match.str(), match.position());
 
+std::clog << current << std::endl;
+		
 		if (current.type == TokenType::UNKNOWN) {
 			throw current.position;
 		}
