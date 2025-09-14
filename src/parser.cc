@@ -3,6 +3,7 @@
 #include <iterator> // std::distance
 #include <cctype>
 #include <stdexcept>
+#include <format>
 
 Token::Token(TokenType type, std::string_view value, size_t originalPosition) {
 	this.type = type;
@@ -30,7 +31,41 @@ Token::Token(std::string value, size_t originalPosition) {
 }
 
 std::string Token::toString() {
-	return this.value;
+	using enum TokenType;
+	
+	std::string strType;
+	switch (this.type) {
+		case UNKNOWN:
+			strType = "UNKNOWN";
+			break;
+		case NUMBER:
+			strType = "NUMBER";
+			break;
+		case OPERATOR:
+			strType = "OPERATOR";
+			break;
+		case IDENTIFIER:
+			strType = "IDENTIFIER";
+			break;
+		case FUNCTION:
+			strType = "FUNCTION";
+			break;
+		case CONSTANT:
+			strType = "CONSTANT";
+			break;
+		case L_PAREN:
+			strType = "L_PAREN";
+			break;
+		case R_PAREN:
+			strType = "R_PAREN";
+			break;
+		case COMMA:
+			strType = "COMMA";
+			break;
+		default: break;
+	}
+	
+	return std::format("{}:{}", strType, this.value);
 }
 
 std::ostream& operator<<(std::ostream& os, const Token& token) {
@@ -67,21 +102,11 @@ double Parser::evaluate(const MathExpression& postfix) {
 }
 
 std::string Parser::toString(const MathExpression& exp) {
-	std::string result;
-	
+	std::string result = "[";
 	for (auto token : exp) {
-		result += token.toString();
-
-		using enum TokenType;
-		switch (token.type) {
-			case L_PAREN:
-			case FUNCTION:
-			case CONSTANT:
-				break;
-			default:
-				result += ' ';
-				break;
+		result += token.toString() + ", ";
 	}
+	result += "]";
 
 	return result;
 }
