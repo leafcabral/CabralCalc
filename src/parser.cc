@@ -9,9 +9,19 @@ Token::Token(TokenType type, std::string_view value, size_t originalPosition) {
 }
 
 Token::Token(std::string value, size_t originalPosition) {
-	std::regex validTokens = Token::validTokens();
-
-	
+	this.type = TokenType::UNKNOWN;
+	for (const auto& pattern : ValidTokens::patterns) {
+		if (std::regex_match(value, pattern.first) {
+			this.type = pattern.second;
+		}
+	}
+	if (this.type == TokenType::IDENTIFIER) {
+		if (ValidTokens::functions.contains(value)) {
+			this.type = TokenType::FUNCTION;
+		} else if (ValidTokens::constants.contains(value)) {
+			this.type = TokenType::CONSTANT;
+		}
+	}
 	
 	this.value = value;
 	this.originalPosition = originalPosition;

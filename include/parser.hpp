@@ -42,6 +42,17 @@ namespace ValidTokens {
 	const std::regex regexLParen(R"([(])|");
 	const std::regex regexRParen(R"([)])|");
 	const std::regex regexComma(R"(,))");
+	const std::regex regexALL(
+		'(' +
+		regexIntDivision.str() + ")|("+
+		regexNumber.str() + ")|("+
+		regexIdentifier.str() + ")|("+
+		regexOperator.str() + ")|("+
+		regexLParen.str() + ")|("+
+		regexRParen.str() + ")|("+
+		regexComma.str() +
+		')'
+	);
 
 	const std::pair<const std::regex*, TokenType> patterns[] = {
 		{&regexIntDivision, TokenType::OPERATOR},
