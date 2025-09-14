@@ -24,45 +24,43 @@ enum class TokenType {
 struct Token {
 	TokenType type;
 	std::string value;
-	size_t originalPosition; // For error printing
+	size_t position; // For error printing
 
-	Token(TokenType type, std::string value, size_t originalPosition);
-	Token(std::string value, size_t originalPosition);
+	Token(TokenType tt, std::string str, size_t pos);
+	Token(std::string str, size_t pos);
 
-	std::string toString();
+	std::string toString() const;
 	friend std::ostream& operator<<(std::ostream& os, const Token& token);
 
 };
 
 namespace ValidTokens {
-	const std::regex regexIntDivision(R"(//)|");
-	const std::regex regexNumber(R"(([0-9]*\.?[0-9]+(?:[eE][-+]?[0-9]+)?)|");
-	const std::regex regexIdentifier(R"([a-zA-Z][a-zA-Z0-9]*)|");
-	const std::regex regexOperator(R"([+\\-*/^])|");
-	const std::regex regexLParen(R"([(])|");
-	const std::regex regexRParen(R"([)])|");
-	const std::regex regexComma(R"(,))");
+	const std::regex regexIntDivision("(//)");
+	const std::regex regexNumber("([0-9]*\\.?[0-9]+(?:[eE][-+]?[0-9]+)?)");
+	const std::regex regexIdentifier("([a-zA-Z][a-zA-Z0-9]*)");
+	const std::regex regexOperator("([-+*/^])");
+	const std::regex regexLParen("([(])");
+	const std::regex regexRParen("([)])");
+	const std::regex regexComma("(,)");
 	const std::regex regexALL(
-		'(' +
-		regexIntDivision.str() + ")|("+
-		regexNumber.str() + ")|("+
-		regexIdentifier.str() + ")|("+
-		regexOperator.str() + ")|("+
-		regexLParen.str() + ")|("+
-		regexRParen.str() + ")|("+
-		regexComma.str() +
-		')'
+		"(//)|"
+		"([0-9]*\\.?[0-9]+(?:[eE][-+]?[0-9]+)?)|"
+		"([a-zA-Z][a-zA-Z0-9]*)|"
+		"([-+*/^])|"
+		"([(])|"
+		"([)])|"
+		"(,)"
 	);
 
-	const std::pair<const std::regex*, TokenType> patterns[] = {
-		{&regexIntDivision, TokenType::OPERATOR},
-		{&regexNumber, TokenType::NUMBER},
-		{&regexIdentifier, TokenType::IDENTIFIER},
-		{&regexOperator, TokenType::OPERATOR},
-		{&regexLParen, TokenType::L_PAREN},
-		{&regexRParen, TokenType::R_PAREN},
-		{&regexComma, TokenType::COMMA},
-	}
+	const std::pair<const std::regex, TokenType> patterns[] = {
+		{regexIntDivision, TokenType::OPERATOR},
+		{regexNumber, TokenType::NUMBER},
+		{regexIdentifier, TokenType::IDENTIFIER},
+		{regexOperator, TokenType::OPERATOR},
+		{regexLParen, TokenType::L_PAREN},
+		{regexRParen, TokenType::R_PAREN},
+		{regexComma, TokenType::COMMA},
+	};
 	
 	const std::unordered_set<std::string> functions = {
 		"sin", "cos", "tan", "sqrt", "log",
@@ -82,7 +80,7 @@ namespace Parser {
 	double evaluate(const MathExpression& postfix);
 
 	std::string toString(const MathExpression& exp);
-	friend std::ostream& operator<<(std::ostream& os, const MathExpression& exp);
+	std::ostream& operator<<(std::ostream& os, const MathExpression& exp);
 };
 
 #endif

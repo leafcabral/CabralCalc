@@ -5,36 +5,36 @@
 #include <stdexcept>
 #include <format>
 
-Token::Token(TokenType type, std::string_view value, size_t originalPosition) {
-	this.type = type;
-	this.value = value;
-	this.originalPosition = originalPosition;
+Token::Token(TokenType tt, std::string str, size_t pos) {
+	this->type = tt;
+	this->value = str;
+	this->position = pos;
 }
 
-Token::Token(std::string value, size_t originalPosition) {
-	this.type = TokenType::UNKNOWN;
+Token::Token(std::string str, size_t pos) {
+	this->type = TokenType::UNKNOWN;
 	for (const auto& pattern : ValidTokens::patterns) {
-		if (std::regex_match(value, pattern.first) {
-			this.type = pattern.second;
+		if (std::regex_match(value, pattern.first)) {
+			this->type = pattern.second;
 		}
 	}
-	if (this.type == TokenType::IDENTIFIER) {
+	if (this->type == TokenType::IDENTIFIER) {
 		if (ValidTokens::functions.contains(value)) {
-			this.type = TokenType::FUNCTION;
+			this->type = TokenType::FUNCTION;
 		} else if (ValidTokens::constants.contains(value)) {
-			this.type = TokenType::CONSTANT;
+			this->type = TokenType::CONSTANT;
 		}
 	}
 	
-	this.value = value;
-	this.originalPosition = originalPosition;
+	this->value = str;
+	this->position = pos;
 }
 
-std::string Token::toString() {
+std::string Token::toString() const {
 	using enum TokenType;
 	
 	std::string strType;
-	switch (this.type) {
+	switch (this->type) {
 		case UNKNOWN:
 			strType = "UNKNOWN";
 			break;
@@ -65,7 +65,7 @@ std::string Token::toString() {
 		default: break;
 	}
 	
-	return std::format("{}:{}", strType, this.value);
+	return std::format("{}:{}", strType, this->value);
 }
 
 std::ostream& operator<<(std::ostream& os, const Token& token) {
@@ -73,18 +73,18 @@ std::ostream& operator<<(std::ostream& os, const Token& token) {
 	return os;
 }
 	
-MathExpression Parser::tokenize(std::string str) {
-	MathExpression result;
+Parser::MathExpression Parser::tokenize(std::string str) {
+	Parser::MathExpression result;
 	
 	std::sregex_iterator begin(str.begin(), str.end(), ValidTokens::regexALL);
 	std::sregex_iterator end;
 
 	for (std::sregex_iterator i = begin; i != end; i++) {
 		auto match = *i;
-		Token current(match.str(), std::distance(str.begin(), match.first));
+		Token current(match.str(), match.position());
 
 		if (current.type == TokenType::UNKNOWN) {
-			throw current.originalPosition;
+			throw current.position;
 		}
 		
 		result.push_back(current);
@@ -93,15 +93,17 @@ MathExpression Parser::tokenize(std::string str) {
 	return result;
 }
 
-MathExpression Parser::toPostfix(const MathExpression& infix) {
+/*
+Parser::MathExpression Parser::toPostfix(const Parser::MathExpression& infix) {
 	;
 }
 
-double Parser::evaluate(const MathExpression& postfix) {
+double Parser::evaluate(const Parser::MathExpression& postfix) {
 	;
 }
+*/
 
-std::string Parser::toString(const MathExpression& exp) {
+std::string Parser::toString(const Parser::MathExpression& exp) {
 	std::string result = "[";
 	for (auto token : exp) {
 		result += token.toString() + ", ";
@@ -111,7 +113,9 @@ std::string Parser::toString(const MathExpression& exp) {
 	return result;
 }
 
-std::ostream& operator<<(std::ostream& os, const MathExpression& exp) {
-	os << Parser::toString(exp);
-	return os;
+namespace Parser {
+	std::ostream& operator<<(std::ostream& os, const Parser::MathExpression& exp) {
+		os << Parser::toString(exp);
+		return os;
+	}
 }
