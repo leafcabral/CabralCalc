@@ -23,5 +23,13 @@ struct Token {
 	Token(TokenType type, std::string_view value, size_t originalPosition);
 };
 
+namespace Parser {
+	using MathExpression = std::vector<Token>;
+
+	MathExpression tokenize(std::string str);
+	MathExpression toPostfix(const MathExpression& infix);
+	double evaluate(const MathExpression& postfix);
+};
+
 #endif
 
