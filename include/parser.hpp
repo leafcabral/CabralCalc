@@ -22,7 +22,8 @@ struct Token {
 	size_t originalPosition; // For error printing
 
 	Token(TokenType type, std::string value, size_t originalPosition);
-	
+
+	std::string toString();
 	friend std::ostream& operator<<(std::ostream& os, const Token& token);
 
 };
@@ -34,6 +35,7 @@ namespace Parser {
 	MathExpression toPostfix(const MathExpression& infix);
 	double evaluate(const MathExpression& postfix);
 
+	std::string toString(const MathExpression& exp);
 	friend std::ostream& operator<<(std::ostream& os, const MathExpression& exp);
 };
 

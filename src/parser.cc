@@ -9,8 +9,12 @@ Token::Token(TokenType type, std::string_view value, size_t originalPosition) {
 	this.originalPosition = originalPosition;
 }
 
+std::string Token::toString() {
+	return this.value;
+}
+
 std::ostream& operator<<(std::ostream& os, const Token& token) {
-	os << token.value;
+	os << token.toString();
 	return os;
 }
 
@@ -26,9 +30,11 @@ double Parser::evaluate(const MathExpression& postfix) {
 	;
 }
 
-std::ostream& operator<<(std::ostream& os, const MathExpression& exp) {
+std::string Parser::toString(const MathExpression& exp) {
+	std::string result;
+	
 	for (auto token : exp) {
-		os << token.value;
+		result += token.toString();
 
 		using enum TokenType;
 		switch (token.type) {
@@ -37,8 +43,14 @@ std::ostream& operator<<(std::ostream& os, const MathExpression& exp) {
 			case CONSTANT:
 				break;
 			default:
-				os << ' ';
+				result += ' ';
 				break;
-		}
 	}
+
+	return result;
+}
+
+std::ostream& operator<<(std::ostream& os, const MathExpression& exp) {
+	os << Parser::toString(exp);
+	return os;
 }
