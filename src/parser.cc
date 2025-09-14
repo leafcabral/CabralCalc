@@ -4,6 +4,7 @@
 #include <iostream>
 #include <unordered_set>
 #include <array>
+#include <stdexcept>
 
 namespace ValidTokens {
 	const std::regex regexIntDivision("(//)");
@@ -53,15 +54,15 @@ Token::Token(TokenType tt, std::string str, size_t pos) {
 Token::Token(std::string str, size_t pos) {
 	this->type = TokenType::UNKNOWN;
 	for (const auto& pattern : ValidTokens::patterns) {
-		if (std::regex_match(value, pattern.first)) {
+		if (std::regex_search(str, pattern.first)) {
 			this->type = pattern.second;
 			break;
 		}
 	}
 	if (this->type == TokenType::IDENTIFIER) {
-		if (ValidTokens::functions.contains(value)) {
+		if (ValidTokens::functions.contains(str)) {
 			this->type = TokenType::FUNCTION;
-		} else if (ValidTokens::constants.contains(value)) {
+		} else if (ValidTokens::constants.contains(str)) {
 			this->type = TokenType::CONSTANT;
 		}
 	}
@@ -122,17 +123,15 @@ Parser::MathExpression Parser::tokenize(std::string str) {
 	for (std::sregex_iterator i = begin; i != end; i++) {
 		auto match = *i;
 		Token current(match.str(), match.position());
-
-std::clog << current << std::endl;
 		
 		if (current.type == TokenType::UNKNOWN) {
-			throw current.position;
+			throw std::runtime_error("Malformed expression at position " + std::to_string(current.position));
 		}
 		
 		result.push_back(current);
 	}
 
-	return result;
+	return result.empty() ? throw std::runtime_error("Malformed expression somewhere") : result;
 }
 
 /*

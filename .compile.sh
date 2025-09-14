@@ -8,7 +8,7 @@ fi
 MODULE="$1"
 SRC_FILE="src/${MODULE}.cc"
 TEST_FILE="tests/${MODULE}-test.cc"
-OUT_FILE="build/${MODULE}"
+OUT_FILE="build/${MODULE}-test"
 
 if [ ! -f "${SRC_FILE}" ]; then
 	echo "Error: Source file ${SRC_FILE} does not exist."
