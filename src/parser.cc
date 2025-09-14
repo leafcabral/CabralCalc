@@ -1,12 +1,18 @@
 #include "parser.hpp"
 
 #include <cctype>
-#include <string>
 
 Token::Token(TokenType type, std::string_view value, size_t originalPosition) {
 	this.type = type;
 	this.value = value;
 	this.originalPosition = originalPosition;
+}
+
+Token::Token(std::string value, size_t originalPosition) {
+	/* std::regex validTokens = Token::validTokens();
+	this.value = value;
+	this.originalPosition = originalPosition;
+	*/
 }
 
 std::string Token::toString() {
@@ -18,8 +24,32 @@ std::ostream& operator<<(std::ostream& os, const Token& token) {
 	return os;
 }
 
+static std::regex Token::validTokens() {
+	std::regex valid(
+		R"(([0-9]*\.?[0-9]+(?:[eE][-+]?[0-9]+)?)|" + // numbers
+		R"([a-zA-Z][a-zA-Z0-9]*)|" + // identifier
+		R"([+\\-*/^()])|" + // operator and parentheses
+		R"(//)|" + // integer division (two operators together)
+		R"(,))", // comma
+		std::regex::optimize // slow compilation, fast runtime
+	);
+	return 
+}
+	
 MathExpression Parser::tokenize(std::string str) {
-	;
+	/*
+	MathExpression result;
+	std::regex validTokens("");
+
+	std::sregex_token_iterator iterator(str.begin(), str.end(), validTokens);
+	std::sregex_token_iterator end;
+
+	for (; iterator != end; iterator++) {
+		Token
+		// va
+		result.push_back(*iterator);
+	}
+	*/
 }
 
 MathExpression Parser::toPostfix(const MathExpression& infix) {
