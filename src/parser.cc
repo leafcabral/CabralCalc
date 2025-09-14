@@ -1,6 +1,8 @@
 #include "parser.hpp"
 
+#include <iterator> // std::distance
 #include <cctype>
+#include <stdexcept>
 
 Token::Token(TokenType type, std::string_view value, size_t originalPosition) {
 	this.type = type;
@@ -37,19 +39,23 @@ std::ostream& operator<<(std::ostream& os, const Token& token) {
 }
 	
 MathExpression Parser::tokenize(std::string str) {
-	/*
 	MathExpression result;
-	std::regex validTokens("");
+	
+	std::sregex_iterator begin(str.begin(), str.end(), ValidTokens::regexALL);
+	std::sregex_iterator end;
 
-	std::sregex_token_iterator iterator(str.begin(), str.end(), validTokens);
-	std::sregex_token_iterator end;
+	for (std::sregex_iterator i = begin; i != end; i++) {
+		auto match = *i;
+		Token current(match.str(), std::distance(str.begin(), match.first));
 
-	for (; iterator != end; iterator++) {
-		Token
-		// va
-		result.push_back(*iterator);
+		if (current.type == TokenType::UNKNOWN) {
+			throw current.originalPosition;
+		}
+		
+		result.push_back(current);
 	}
-	*/
+
+	return result;
 }
 
 MathExpression Parser::toPostfix(const MathExpression& infix) {
