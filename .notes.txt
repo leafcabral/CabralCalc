@@ -1,21 +1,16 @@
-gcc SRC -o OUT -std=c++2x3 -Iinclude -Wall -Wextra -Werror -Wconversion -Wformat -Wunreachable-code -Wfloat-equal -Wshadow -Wpointer-arith -Wstrict-prototypes -Winit-self -g -fsanitize=address,undefined
-
-Parsing an arithmetic expression involves converting a string representation of a mathematical expression into a structured form that can be understood and evaluated by a computer program. Several methods exist, but a common and effective approach involves using stacks to handle operator precedence and parentheses.
-1. Tokenization:
-The first step is to break the expression string into individual components (tokens) such as numbers, operators (+, -, *, /), and parentheses.
-2. Shunting-Yard Algorithm (Infix to Postfix Conversion):
-This algorithm, developed by Edsger Dijkstra, converts the infix expression (where operators are between operands, e.g., 2 + 3) into postfix notation (also known as Reverse Polish Notation or RPN, where operators follow their operands, e.g., 2 3 +). Postfix notation simplifies evaluation because it inherently handles operator precedence without needing parentheses.
-Initialization: Create two stacks: one for operators and one for operands (numbers).
-Iteration: Process the tokens from left to right:
-Number: Push it onto the operand stack.
-Opening Parenthesis (: Push it onto the operator stack.
-Closing Parenthesis ): Pop operators from the operator stack and push them onto the operand stack until an opening parenthesis is encountered. Discard both parentheses.
-Operator: While the operator stack is not empty and the top operator has equal or higher precedence than the current operator, pop operators from the operator stack and push them onto the operand stack. Then, push the current operator onto the operator stack. 
-Finalization: After processing all tokens, pop any remaining operators from the operator stack and push them onto the operand stack. The operand stack now contains the expression in postfix notation.
-3. Evaluation of Postfix Expression:
-Initialization: Create a single stack for storing operands.
-Iteration: Process the tokens in the postfix expression:
-Number: Push it onto the operand stack.
-Operator: Pop the required number of operands (usually two) from the stack, perform the operation, and push the result back onto the stack. 
-Result: The final value remaining on the stack is the result of the expression. 
+1. Semi-Tokenization:
+	Include whitespaces, identifiers (var, func and const) and unknown
+	Report where first unknown semi token is located
+	Group semi tokens of same type together (excepet parentheses)
+	Validate parentheses
+2. Full-Tokenization:
+	Iterate through every semi token 
+	Categorize identifiers
+	Validate numbers, operators and former identifiers
+3. (Modified) Shunting-Yard Algorithm:
+	Infix to postfix conversion
+	https://mathcenter.oxford.emory.edu/site/cs171/shuntingYardAlgorithm/
+4. Evaluation:
+	Calculate value of postfix expression
+	https://studyglance.in/ds/display.php?tno=11&topic=Postfix-Evaluation
 
