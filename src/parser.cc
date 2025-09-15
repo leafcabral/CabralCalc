@@ -5,6 +5,9 @@
 #include <unordered_set>
 #include <array>
 #include <stdexcept>
+#include <stack>
+#include <algorithm> // For std::find
+#include <iterator>  // For std::begin and std::end
 
 namespace ValidTokens {
 	const std::regex regexIntDivision("(//)");
@@ -71,6 +74,28 @@ Token::Token(std::string str, size_t pos) {
 	this->position = pos;
 }
 
+int getPrecedenceValue() {
+	std::string values[4][] = {
+		{"+", "-"},
+		{"*", "/", "//", "%"},
+		{"^"},
+		{"(", ")"}
+	};
+
+	for (int i = 0; i < values.length(); i++) {
+		if (std::find(
+				std::begin(values[i]),
+				std::begin(values[i]),
+				this.value
+			) != std::end(values[i])) {return i; }
+	}
+
+	return -1;
+}
+int cmpPrecedence(Token other) {
+	return this.getPrecedenceValue() - other.getPrecedenceValue();
+}
+
 std::string Token::toString() const {
 	using enum TokenType;
 	
@@ -134,11 +159,37 @@ Parser::MathExpression Parser::tokenize(std::string str) {
 	return result.empty() ? throw std::runtime_error("Malformed expression somewhere") : result;
 }
 
-/*
 Parser::MathExpression Parser::toPostfix(const Parser::MathExpression& infix) {
-	;
+	Parser::MathExpression postfix;
+	std::stack<Token> operators;
+
+	using enum TokenType
+	for (auto symbol& : infix) {
+		switch (symbol.type) {
+			case NUMBER:
+			case IDENTIFIER:
+				postfix.push_back(symbol);
+				break;
+			case OPERATOR:
+			case L_PAREN:
+				operators.push(symbol);
+				break;
+			case R_PAREN:
+				Token temp;
+				while ((temp = operators.top()) != L_PAREN) {
+					postfix.push_back(temp);
+					operators.pop();
+				}
+				operators.pop();
+				break;
+			default:
+				break;
+		}
+	}
+
 }
 
+/*
 double Parser::evaluate(const Parser::MathExpression& postfix) {
 	;
 }

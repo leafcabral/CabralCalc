@@ -27,6 +27,9 @@ struct Token {
 	Token(TokenType tt, std::string str, size_t pos);
 	Token(std::string str, size_t pos);
 
+	int getPrecedenceValue();
+	int cmpPrecedence(Token other);
+
 	std::string toString() const;
 };
 // Operator overload outside to avoid friend keyword
