@@ -24,6 +24,7 @@ struct Token {
 	std::string value;
 	size_t position; // For error printing
 
+	Token();
 	Token(TokenType tt, std::string str, size_t pos);
 	Token(std::string str, size_t pos);
 

@@ -16,16 +16,21 @@ int main(void) {
 		std::cout << ">> ";
 		std::getline(std::cin, input);
 		if (input == "quit") { break; }
-		if (isEmptyOrWhitespace(input)) { continue; }
 		
-		Parser::MathExpression exp;
+		Parser::MathExpression infix;
+		Parser::MathExpression postfix;
+		// double result;
+		
 		try {
-			exp = Parser::tokenize(input);
+			infix = Parser::tokenize(input);
 		} catch (const std::runtime_error& e) {
 			std::cerr << e.what() << std::endl;
 			continue;
 		}
-		std::cout << Parser::toString(exp) << std::endl;
+		postfix = Parser::toPostfix(infix);
+		
+		std::cout << Parser::toString(infix) << std::endl;
+		std::cout << Parser::toString(postfix) << std::endl;
 	} while (input != "quit");
 	
 	return 0;

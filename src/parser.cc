@@ -48,6 +48,12 @@ namespace ValidTokens {
 	};
 }
 
+Token::Token() {
+	this->type = TokenType::UNKNOWN;
+	this->value = "";
+	this->position = -1;
+}
+
 Token::Token(TokenType tt, std::string str, size_t pos) {
 	this->type = tt;
 	this->value = str;
@@ -74,26 +80,18 @@ Token::Token(std::string str, size_t pos) {
 	this->position = pos;
 }
 
-int getPrecedenceValue() {
-	std::string values[4][] = {
-		{"+", "-"},
-		{"*", "/", "//", "%"},
-		{"^"},
-		{"(", ")"}
-	};
+int Token::getPrecedenceValue() {
+	std::string temp = this->value;
 
-	for (int i = 0; i < values.length(); i++) {
-		if (std::find(
-				std::begin(values[i]),
-				std::begin(values[i]),
-				this.value
-			) != std::end(values[i])) {return i; }
-	}
-
+	if (temp == "+" || temp == "-") { return 0; }
+	else if (temp == "*" || temp == "/" || temp == "//" || temp == "%") { return 1;}
+	else if (temp == "^") { return 2; }
+	else if (temp == "(" || temp == ")") { return 3; }
+	
 	return -1;
 }
-int cmpPrecedence(Token other) {
-	return this.getPrecedenceValue() - other.getPrecedenceValue();
+int Token::cmpPrecedence(Token other) {
+	return this->getPrecedenceValue() - other.getPrecedenceValue();
 }
 
 std::string Token::toString() const {
@@ -163,30 +161,50 @@ Parser::MathExpression Parser::toPostfix(const Parser::MathExpression& infix) {
 	Parser::MathExpression postfix;
 	std::stack<Token> operators;
 
-	using enum TokenType
-	for (auto symbol& : infix) {
+	Token temp;
+	using enum TokenType;
+	for (auto symbol : infix) {
 		switch (symbol.type) {
 			case NUMBER:
 			case IDENTIFIER:
 				postfix.push_back(symbol);
 				break;
 			case OPERATOR:
+				if (!operators.empty()) {
+					temp = operators.top();
+					if (temp.type != L_PAREN && symbol.cmpPrecedence(temp) <= 0) {
+						postfix.push_back(symbol);
+						break;
+					}
+				}
+				[[fallthrough]];
 			case L_PAREN:
 				operators.push(symbol);
 				break;
 			case R_PAREN:
-				Token temp;
-				while ((temp = operators.top()) != L_PAREN) {
+				while ((temp = operators.top()).type != L_PAREN) {
 					postfix.push_back(temp);
 					operators.pop();
 				}
 				operators.pop();
 				break;
-			default:
+			case FUNCTION:
 				break;
+			case CONSTANT:
+				break;
+			case COMMA:
+				break;
+			case UNKNOWN:
+				break;
+			default: break;
 		}
 	}
-
+	while (!operators.empty()) {
+		postfix.push_back(operators.top());
+		operators.pop();
+	}
+	
+	return postfix;
 }
 
 /*
