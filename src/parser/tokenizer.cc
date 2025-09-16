@@ -2,13 +2,17 @@
 
 namespace tokenizer {
 	SemiToken::SemiToken() {
+		type {UNKNOWN};
+		value {""};
+		position {0};
+	}
+	SemiToken(const std::string& str, const size_t pos) {
 		;
 	}
-	SemiToken::SemiToken(SemiTokenType stt, std::string& str, size_t pos) {
-		;
-	}
-	SemiToken::SemiToken(std::string& str, size_t pos) const {
-		;
+	SemiToken(const SemiTokenType stt, const std::string& str, const size_t pos) {
+		type {stt};
+		value {str};
+		position {pos};
 	}
 
 	std::string SemiToken::toString() const {
@@ -24,10 +28,10 @@ namespace tokenizer {
 	}
 	
 
-	SemiToken::Token(SemiTokenType stt, std::string& str) {
+	SemiToken::Token(std::string& str) {
 		;
 	}
-	SemiToken::Token(std::string& str) {
+	SemiToken::Token(SemiTokenType stt, std::string& str) {
 		;
 	}
 

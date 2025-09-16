@@ -32,11 +32,11 @@ namespace tokenizer {
 	struct SemiToken {
 		SemiTokenType type;
 		std::string value;
-		const size_t position;
+		size_t position;
 
 		SemiToken();
-		SemiToken(SemiTokenType stt, std::string& str, size_t pos);
-		SemiToken(std::string& str, size_t pos) const;
+		SemiToken(const std::string& str, const size_t pos);
+		SemiToken(const SemiTokenType stt, const std::string& str, const size_t pos);
 
 		std::string toString() const;
 
@@ -48,8 +48,8 @@ namespace tokenizer {
 		const TokenType type;
 		const std::string value;
 
-		Token(SemiTokenType stt, std::string& str);
-		Token(std::string& str);
+		Token(const SemiTokenType stt, const std::string& str);
+		Token(const std::string& str);
 
 		int cmpPrecendence(const Token& other) const;
 
