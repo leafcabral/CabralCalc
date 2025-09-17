@@ -33,28 +33,10 @@ namespace tokenizer {
 			SemiTokenType currentType = UNKNOWN;
 			char currentCHAR = str[i];
 			
-			if (std::isdigit(currentCHAR)) {
-				currentType = NUMBER;
-				
-				if (!semiTokens.empty()) {
-					if (semiTokens.back().type == IDENTIFIER) {
-						currentType = IDENTIFIER;
-					}
-				}
-			}
+			if (std::isdigit(currentCHAR)) { currentType = NUMBER; }
 			else if (std::isspace(currentCHAR)) { currentType = WHITESPACE; }
 			else if (validOperators.contains(currentCHAR)) { currentType = OPERATOR; }
-			else if (std::isalpha(currentCHAR)) {
-				currentType = IDENTIFIER;
-				
-				if (!semiTokens.empty()) {
-					SemiToken last = semiTokens.back();
-					
-					if (last.type == NUMBER) {
-						semiTokens.push_back(SemiToken(OPERATOR, "*", i));
-					}
-				}
-			}
+			else if (std::isalpha(currentCHAR)) { currentType = IDENTIFIER; }
 			else if (currentCHAR == '(') {
 				currentType = L_PAREN;
 				checkParen++;
@@ -66,9 +48,17 @@ namespace tokenizer {
 			else if (currentCHAR == ',') { currentType = COMMA; } 
 			else if (currentCHAR == '.') {
 				if (!semiTokens.empty()) {
-					if (semiTokens.back().type == NUMBER) {
+					SemiToken last = semiTokens.back();
+					
+					if (last.type == NUMBER) {
 						currentType = NUMBER;
+					} else if (last.type == WHITESPACE {
+						currentType = NUMBER;
+						semiTokens.push_back(SemiToken(NUMBER, "0", i));
 					}
+				} else {
+					currentType = NUMBER;
+					semiTokens.push_back(SemiToken(NUMBER, "0", i));
 				}
 			} else if (currentCHAR = '_') {
 				if (!semiTokens.empty()) {
