@@ -1,4 +1,5 @@
 #include "parser/tokenizer.hpp"
+#include <cctype>
 
 namespace tokenizer {
 	SemiToken::SemiToken() {
@@ -20,7 +21,39 @@ namespace tokenizer {
 	}
 
 	static std::vector<SemiToken> SemiToken::convert(const std::string& str) {
-		;
+		std::vector<SemiToken> semiTokens;
+
+		using enum SemiTokenType;
+		for (int i = 0; i < str.length(); i++) {
+			SemiToken currentST;
+			char currentCHAR = str[i];
+
+			if (std::isdigit(currentCHAR)) { current {NUMBER, currentCHAR, i}; }
+			else if (std::isspace(currentCHAR)) { current {WHITESPACE, currentCHAR, i}; }
+			else if (std::isalpha(currentCHAR)) { current {IDENTIFIER, currentCHAR, i}; }
+			else {
+				switch (currentCHAR) {
+					case '(':
+						current {L_PAREN, currentCHAR, i};
+						break;
+					case ')':
+						current {R_PAREN, currentCHAR, i};
+						break;
+					case ',':
+						current {COMMA, currentCHAR, i};
+						break;
+					case '+':
+					case '-':
+					case '*':
+					case '/':
+					case '^':
+					case '|':
+					case '%':
+						current {OPERATOR, currentCHAR, i};
+						break;
+				}
+			}
+		}
 	}
 	
 	std::ostream& operator<<(std::ostream& os, const SemiToken& stk) {
