@@ -34,15 +34,13 @@ namespace tokenizer {
 		std::string value;
 		size_t position;
 
-		SemiToken();
-		SemiToken(const std::string& str, const size_t pos);
 		SemiToken(const SemiTokenType stt, const std::string& str, const size_t pos);
 
 		std::string toString() const;
+		SemiToken operator+(const SemiToken& other) const;
 
 		static std::vector<SemiToken> convert(const std::string& str);
 	};
-	std::ostream& operator<<(std::ostream& os, const SemiToken& stk);
 	
 	struct Token {
 		const TokenType type;
