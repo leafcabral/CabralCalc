@@ -104,22 +104,22 @@ namespace tokenizer {
 		return semiTokens;
 	}
 
-	SemiToken::Token(std::string& str) {
+	Token::Token(std::string& str) {
 		;
 	}
-	SemiToken::Token(SemiTokenType stt, std::string& str) {
-		;
-	}
-
-	int SemiToken::cmpPrecendence(const Token& other) const {
+	Token::Token(SemiTokenType stt, std::string& str) {
 		;
 	}
 
-	std::string SemiToken::toString() const {
+	int Token::cmpPrecendence(const Token& other) const {
+		;
+	}
+
+	std::string Token::toString() const {
 		;
 	}
 	
-	static std::vector<Token> SemiToken::convert(const SemiToken& stk) {
+	static std::vector<Token> Token::convert(const SemiToken& stk) {
 		;
 	}
 	
