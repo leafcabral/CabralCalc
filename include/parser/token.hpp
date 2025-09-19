@@ -5,18 +5,7 @@
 #include <vector>
 #include <iosfwd> // Forward declaration of iostream
 
-namespace tokenizer {
-	enum class SemiTokenType {
-		UNKNOWN,
-		WHITESPACE,
-		NUMBER,
-		OPERATOR,
-		IDENTIFIER,
-		L_PAREN,
-		R_PAREN,
-		COMMA
-	};
-	
+namespace parser {
 	enum class TokenType {
 		NUMBER,
 		UNARY_OPERATOR,
@@ -29,19 +18,6 @@ namespace tokenizer {
 		COMMA
 	};
 
-	struct SemiToken {
-		SemiTokenType type;
-		std::string value;
-		size_t position;
-
-		SemiToken(const SemiTokenType stt, const std::string& str, const size_t pos);
-
-		std::string toString() const;
-		SemiToken operator+(const SemiToken& other) const;
-
-		static std::vector<SemiToken> convert(const std::string& str);
-	};
-	
 	struct Token {
 		const TokenType type;
 		const std::string value;
@@ -56,10 +32,8 @@ namespace tokenizer {
 		std::string toString() const;
 		
 		static std::vector<Token> convert(const std::vector<SemiToken>& semiTokens);
+		friend std::ostream& operator<<(std::ostream& os, const Token& tk);
 	};
-	std::ostream& operator<<(std::ostream& os, const Token& tk);
-
-	std::vector<Token> toTokenList(const std::string& str);
 }
 
 #endif

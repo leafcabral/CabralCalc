@@ -1,6 +1,9 @@
 #ifndef CABRALCALC_PARSER
 #define CABRALCALC_PARSER
 
+#include "parser/semitoken.hpp"
+#include "parser/token.hpp"
+#include "parser/math.hpp"
 #include <string>
 #include <vector>
 
