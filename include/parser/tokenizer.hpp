@@ -45,15 +45,17 @@ namespace tokenizer {
 	struct Token {
 		const TokenType type;
 		const std::string value;
+		const size_t position;
 
-		Token(const SemiTokenType stt, const std::string& str);
-		Token(const std::string& str);
+		Token(const SemiTokenType tt, const std::string& str, const size_t pos);
+		Token(const std::string& str, const size_t pos);
+		Token(const SemiToken& st);
 
 		int cmpPrecendence(const Token& other) const;
 
 		std::string toString() const;
 		
-		static std::vector<Token> convert(const SemiToken& stk);
+		static std::vector<Token> convert(const std::vector<SemiToken>& semiTokens);
 	};
 	std::ostream& operator<<(std::ostream& os, const Token& tk);
 

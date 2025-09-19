@@ -9,7 +9,7 @@ CabralCalc is a CLI calculator app that's intended to have support for basic and
 - [ ] Extra operators ```** // mod |a|```
 - [ ] Trigonometric functions ```sin(a) cos(a) tan(a)```
 - [ ] Constants ```pi e phi```
-- [ ] Variables ```x abc variable_1```
+- [ ] Variables ```x abc vArIaBlE```
 - [ ] Percentage ```100% 1_000%% 100_000%%%%```
 
 ## Installing
