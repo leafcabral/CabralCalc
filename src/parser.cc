@@ -2,17 +2,25 @@
 #include "parser/math.hpp"
 #include "parser.hpp"
 
-#include <string>
-#include <vector>
+#include <stdexception>
 
 namespace parser {
-	class MathExpression {
-	public:
-		MathExpression(const std::string& str);
-		
-	private:
-		std::string str;
-		std::vector<tokenizer::Tokens> tokens;
-		double result;
+	MathExpression::MathExpression(const std::string& s) : str{s}, tokens{}, result{0} {}
+
+	std::vector<Tokens> MathExpression::_generateTokens() {
+
+	}
+
+	double MathExpression::_generateResult() {
+
+	}
+
+	double MathExpression::evaluate() {
+		try {
+			this->_generateTokens();
+			return this->_generateResult();
+		} catch (const std::runtime_error& e) {
+			throw e;
+		}
 	}
 }
