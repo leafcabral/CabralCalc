@@ -1,0 +1,16 @@
+1. Semi-Tokenization:
+	Include whitespaces, identifiers (var, func and const) and unknown
+	Report where first unknown semi token is located
+	Group semi tokens of same type together (excepet parentheses)
+	Validate parentheses
+2. Full-Tokenization:
+	Iterate through every semi token 
+	Categorize identifiers
+	Validate numbers, operators and former identifiers
+3. (Modified) Shunting-Yard Algorithm:
+	Infix to postfix conversion
+	https://mathcenter.oxford.emory.edu/site/cs171/shuntingYardAlgorithm/
+4. Evaluation:
+	Calculate value of postfix expression
+	https://studyglance.in/ds/display.php?tno=11&topic=Postfix-Evaluation
+
